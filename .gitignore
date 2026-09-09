@@ -1,0 +1,14 @@
+# Planilhas de origem não vão para o repositório
+*.xlsx
+*.xlsm
+*.xls
+*.csv
+
+# Cópias de trabalho
+~$*
+*.tmp
+
+# dados.json NÃO está bloqueado: ele é o que alimenta o painel publicado.
+# Se o conteúdo for sensível, mantenha o repositório privado ou remova a linha
+# abaixo do comentário para bloqueá-lo também.
+# dados.json
