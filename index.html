@@ -88,16 +88,17 @@ select{
 .chip[aria-pressed="true"]:hover{color:#fff}
 
 /* ---------- corpo ---------- */
-.corpo{max-width:1240px; margin:0 auto; padding:24px; display:grid; grid-template-columns:196px 1fr; gap:28px}
-nav.abas{position:sticky; top:calc(var(--chrome-h) + 16px); align-self:start; display:flex; flex-direction:column; gap:1px}
+.corpo{max-width:1240px; margin:0 auto; padding:24px}
+
+/* abas horizontais no cabeçalho fixo */
+nav.abas{background:var(--superficie); border-bottom:1px solid var(--linha)}
+.abas-linha{max-width:1240px; margin:0 auto; padding:0 24px; display:flex; gap:4px}
 nav.abas button{
-  text-align:left; border:0; background:none; padding:9px 12px; border-left:3px solid transparent;
-  cursor:pointer; color:var(--tinta-2); font-size:13.5px; border-radius:0 var(--raio) var(--raio) 0;
+  border:0; background:none; padding:11px 16px 10px; cursor:pointer;
+  color:var(--tinta-2); font-size:14px; border-bottom:2px solid transparent; margin-bottom:-1px;
 }
-nav.abas button:hover{background:rgba(0,158,193,.07); color:var(--ciano)}
-nav.abas button[aria-selected="true"]{
-  border-left-color:var(--ciano); background:var(--superficie); color:var(--marinho); font-weight:700;
-}
+nav.abas button:hover{color:var(--ciano)}
+nav.abas button[aria-selected="true"]{border-bottom-color:var(--ciano); color:var(--marinho); font-weight:700}
 main{min-width:0}
 section[hidden]{display:none}
 .secao-cab{margin:0 0 18px}
@@ -112,10 +113,11 @@ section[hidden]{display:none}
 .cartao-cab h3{margin:3px 0 0; font-size:15px; font-weight:700; letter-spacing:-.01em; color:var(--marinho)}
 .cartao-cab .nota{font-size:12px; color:var(--tinta-3); font-variant-numeric:tabular-nums}
 
-.kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px}
-.kpi{background:var(--superficie); border:1px solid var(--linha); border-radius:var(--raio); padding:13px 16px 15px; box-shadow:var(--sombra)}
-.kpi .valor{font-size:26px; font-weight:700; letter-spacing:-.03em; margin-top:7px; line-height:1.1; font-variant-numeric:tabular-nums; color:var(--marinho)}
-.kpi .apoio{font-size:12px; color:var(--tinta-2); margin-top:5px}
+.kpis{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:12px}
+.kpi{background:var(--superficie); border:1px solid var(--linha); border-radius:var(--raio); padding:13px 14px 15px; box-shadow:var(--sombra); min-width:0}
+.kpi .valor{font-size:24px; font-weight:700; letter-spacing:-.03em; margin-top:7px; line-height:1.1; font-variant-numeric:tabular-nums; color:var(--marinho)}
+.kpi .apoio{font-size:12px; color:var(--tinta-3); margin-top:6px; line-height:1.45}
+.kpi .apoio b{color:var(--tinta-2); font-weight:700; display:block}
 
 /* ---------- badges de situação ---------- */
 .badge{display:inline-block; padding:3px 10px; border-radius:99px; font-size:11px; font-weight:700; letter-spacing:.02em; white-space:nowrap}
@@ -130,16 +132,7 @@ section[hidden]{display:none}
 .fill{height:100%; border-radius:3px}
 .pct{font-size:12.5px; font-weight:700; white-space:nowrap; min-width:42px; text-align:right; font-variant-numeric:tabular-nums}
 
-/* ---------- ranking por distribuidora ---------- */
-.rank-linha{
-  display:grid; grid-template-columns:minmax(170px,1.2fr) 96px minmax(180px,1.4fr) 74px;
-  align-items:center; gap:16px; padding:11px 0; border-top:1px solid var(--linha);
-  cursor:pointer; font-size:13.5px;
-}
-.rank-linha:first-of-type{border-top:none}
-.rank-linha:hover{background:var(--superficie-2)}
-.rank-linha:focus-visible{outline:2px solid var(--ciano); outline-offset:2px}
-.rank-linha .frac{font-size:12.5px; color:var(--tinta-3); text-align:right}
+/* ---------- identificação de empresa ---------- */
 .empresa{display:flex; align-items:center; font-weight:600}
 .sigla{
   display:inline-block; min-width:38px; padding:3px 7px; margin-right:11px;
@@ -159,6 +152,13 @@ table.dados tr:last-child td{border-bottom:0}
 table.dados tbody tr:hover td{background:var(--superficie-2)}
 table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-space:nowrap}
 .rolagem{overflow-x:auto}
+.tabela-alta{max-height:330px; overflow-y:auto}
+/* atrasos: sigla estreita, textos à esquerda, prazos à direita */
+table.dados.t-atrasos th{text-align:center}
+table.dados.t-atrasos td:nth-child(1){width:62px; text-align:center}
+table.dados.t-atrasos td:nth-child(2), table.dados.t-atrasos td:nth-child(3){text-align:left}
+table.dados.t-atrasos td:nth-child(4), table.dados.t-atrasos td:nth-child(5){text-align:center; white-space:nowrap}
+.tabela-alta thead th{position:sticky; top:0; background:var(--superficie); z-index:1}
 
 /* ---------- vencimentos (cronograma) ---------- */
 .crono-resumo{display:flex; gap:22px; flex-wrap:wrap; font-size:12.5px; color:var(--tinta-2); margin-bottom:18px}
@@ -166,9 +166,13 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
 .crono-resumo .c-venc{color:var(--laranja-texto)}
 .crono-resumo .c-atual{color:var(--ambar-texto)}
 .crono-resumo .c-fut{color:var(--verde-texto)}
-.crono-cols{display:flex; align-items:flex-end; gap:6px; padding-top:26px}
-.crono-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0}
-.crono-col.marco{border-left:1px dashed var(--linha-forte); padding-left:6px; margin-left:-1px}
+.crono-resumo .c-zero{color:var(--tinta-3)}
+.crono-cols{display:flex; align-items:flex-end; justify-content:flex-start; gap:8px; padding-top:26px}
+.crono-col{flex:1 1 0; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0}
+.crono-cols.poucas .crono-col{max-width:96px}
+.crono-col.marco{background:rgba(0,158,193,.07); border-radius:var(--raio) var(--raio) 0 0}
+.crono-col.marco .crono-lab{color:var(--ciano); font-weight:700}
+.crono-col.vazia .crono-haste{border-bottom:1px solid var(--linha)}
 .crono-haste{position:relative; height:118px; width:100%}
 .crono-bar{position:absolute; left:0; right:0; bottom:0; border-radius:3px 3px 0 0; min-height:3px; background:var(--faixa-baixa)}
 .crono-bar.venc{background:var(--faixa-alta)}
@@ -178,12 +182,72 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
 .crono-lab{font-size:11.5px; color:var(--tinta-3); white-space:nowrap}
 .crono-nota{margin-top:14px; font-size:12px; color:var(--tinta-3)}
 
+/* ---------- sub-bloco dentro de um cartão ---------- */
+.sub-bloco{margin-top:22px; padding-top:18px; border-top:1px solid var(--linha)}
+.sub-titulo{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--tinta-3); font-weight:700; margin-bottom:14px}
+
+/* ---------- matriz entrega × empresa ---------- */
+.matriz{display:grid; gap:2px; min-width:560px}
+.matriz-cab{font-size:11px; font-weight:700; color:var(--tinta-2); padding:0 2px 8px;
+  border-bottom:1px solid var(--linha-forte); white-space:nowrap; cursor:pointer;
+  display:flex; align-items:flex-end; justify-content:center; text-align:center}
+.matriz-cab:hover{color:var(--ciano)}
+.matriz-cab.canto{cursor:default}
+.matriz-rot{font-size:12.5px; display:flex; align-items:center; padding:6px 12px 6px 0; line-height:1.3;
+  border-top:1px solid var(--linha)}
+.matriz-cel{min-height:30px; display:flex; align-items:center; justify-content:center; border-top:1px solid var(--linha);
+  font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; border-radius:2px}
+.matriz-cel.vazia{color:var(--tinta-3); font-weight:400; background:transparent}
+.matriz-cel.tem-atraso{box-shadow:inset 0 -3px 0 var(--laranja-texto)}
+.matriz-rot.geral, .matriz-cel.geral{border-top:1.5px solid var(--linha-forte)}
+.matriz-legenda{display:flex; gap:18px; flex-wrap:wrap; align-items:center; margin-top:16px; font-size:11.5px; color:var(--tinta-2)}
+.matriz-legenda span{display:flex; align-items:center; gap:7px; white-space:nowrap}
+.matriz-legenda i{width:20px; height:12px; border-radius:2px; display:inline-block; flex:none}
+.matriz-legenda i.esc-cor{background:linear-gradient(90deg, rgba(242,107,67,.45), rgba(251,174,64,.45), rgba(140,198,63,.45)); width:44px}
+.matriz-legenda i.risco{background:var(--superficie-2); box-shadow:inset 0 -3px 0 var(--laranja-texto)}
+.matriz-legenda i.sem-dado{background:transparent; color:var(--tinta-3); text-align:center; font-style:normal; line-height:12px}
+
+/* lista usada no lugar da matriz quando há só uma distribuidora filtrada */
+.lista-linha{
+  display:grid; grid-template-columns:minmax(200px,1.5fr) 112px 74px minmax(220px,1.6fr);
+  align-items:center; gap:16px; padding:11px 0; border-top:1px solid var(--linha); font-size:13.5px;
+}
+.lista-linha:first-child{border-top:none}
+.lista-linha.total{border-top:1.5px solid var(--linha-forte); font-weight:700}
+.lista-nome{line-height:1.35}
+.lista-frac{font-size:12.5px; color:var(--tinta-3); text-align:right; font-variant-numeric:tabular-nums}
+
+/* ---------- linha do tempo das entregas ---------- */
+.tempo-grid{display:grid; gap:2px; align-items:stretch; min-width:560px; justify-content:start}
+.tempo-cab{font-size:10.5px; color:var(--tinta-3); padding-bottom:7px; border-bottom:1px solid var(--linha-forte);
+  white-space:nowrap; display:flex; align-items:flex-end; justify-content:center; text-align:center}
+.tempo-cab.marco{color:var(--ciano); font-weight:700}
+.tempo-cab.total{color:var(--tinta-2); font-weight:700}
+.tempo-rot{font-size:12.5px; display:flex; align-items:center; justify-content:center; padding:5px 4px; white-space:nowrap}
+.tempo-cel{min-height:26px; display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:700; font-variant-numeric:tabular-nums; border-radius:2px}
+.tempo-cel.vazia{background:transparent}
+.tempo-cel.tom-ok{background:rgba(140,198,63,.22); color:var(--verde-texto)}
+.tempo-cel.tom-atraso{background:rgba(242,107,67,.20); color:var(--laranja-texto)}
+.tempo-cel.tom-pendente{background:rgba(91,100,128,.12); color:var(--tinta-2)}
+.tempo-cel.marco{box-shadow:inset 0 0 0 1.5px var(--ciano)}
+.tempo-cel.total{background:var(--superficie-2); color:var(--tinta-2); border:1px solid var(--linha)}
+.tempo-legenda{display:flex; gap:18px; flex-wrap:wrap; align-items:center; margin-top:16px; font-size:11.5px; color:var(--tinta-2)}
+.tempo-legenda span{display:flex; align-items:center; gap:7px; white-space:nowrap}
+.tempo-legenda i{width:20px; height:12px; border-radius:2px; display:inline-block; flex:none}
+.tempo-legenda i.am-ok{background:rgba(140,198,63,.22); box-shadow:inset 0 0 0 1px rgba(92,155,36,.35)}
+.tempo-legenda i.am-atraso{background:rgba(242,107,67,.20); box-shadow:inset 0 0 0 1px rgba(210,72,31,.35)}
+.tempo-legenda i.am-pendente{background:rgba(91,100,128,.12); box-shadow:inset 0 0 0 1px rgba(91,100,128,.25)}
+.tempo-legenda i.am-marco{background:var(--superficie); box-shadow:inset 0 0 0 1.5px var(--ciano)}
+.tempo-nota{margin-top:9px; font-size:11.5px; color:var(--tinta-3)}
+
 /* ---------- grupos operacionais ---------- */
 .grupo{background:var(--superficie); border:1px solid var(--linha); border-radius:var(--raio); margin-bottom:10px; overflow:hidden}
 .grupo-head{
-  display:grid; grid-template-columns:minmax(190px,1.5fr) minmax(140px,1fr) 96px minmax(170px,1.1fr) 18px;
-  align-items:center; gap:18px; padding:15px 18px; cursor:pointer; user-select:none;
+  display:grid; grid-template-columns:64px minmax(130px,.9fr) 112px minmax(210px,1.7fr) 18px;
+  align-items:center; gap:16px; padding:14px 18px; cursor:pointer; user-select:none;
 }
+.grupo-head.tipo{grid-template-columns:minmax(220px,2fr) 84px 112px minmax(210px,1.5fr) 18px}
 .grupo-head:hover{background:var(--superficie-2)}
 .grupo-head:focus-visible{outline:2px solid var(--ciano); outline-offset:-2px}
 .ref{font-size:12.5px; color:var(--tinta-3); line-height:1.5}
@@ -198,9 +262,10 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
 .plano{border-top:1px solid var(--linha)}
 .plano:first-child{border-top:none}
 .plano-head{
-  display:grid; grid-template-columns:minmax(180px,1.6fr) 118px 92px minmax(160px,1fr) 18px;
-  align-items:center; gap:16px; padding:12px 0; cursor:pointer; user-select:none; font-size:13.5px;
+  display:grid; grid-template-columns:minmax(200px,1.8fr) 118px 84px minmax(190px,1.2fr) 18px;
+  align-items:center; gap:16px; padding:11px 0; cursor:pointer; user-select:none; font-size:13.5px;
 }
+.plano-head.linha-empresa{grid-template-columns:64px 118px 84px minmax(190px,1.6fr) 18px}
 .plano-head:focus-visible{outline:2px solid var(--ciano); outline-offset:-2px}
 .plano-nome{line-height:1.4}
 .prazo{font-size:12.5px; color:var(--tinta-3); white-space:nowrap}
@@ -222,6 +287,16 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
 .entrega.concluida .status{color:var(--verde-texto)}
 
 .vazio{padding:44px; text-align:center; color:var(--tinta-3); font-size:14px; background:var(--superficie); border-radius:var(--raio); border:1px solid var(--linha)}
+.tudo-certo{
+  display:flex; align-items:center; gap:10px;
+  background:rgba(140,198,63,.14); color:var(--verde-texto);
+  border-radius:var(--raio); padding:11px 14px; font-size:13px; font-weight:600;
+}
+.tudo-certo::before{
+  content:""; width:6px; height:11px; flex:none; margin:0 2px 4px 2px;
+  border-right:2px solid var(--verde-texto); border-bottom:2px solid var(--verde-texto);
+  transform:rotate(40deg);
+}
 
 /* ---------- avisos ---------- */
 .aviso{
@@ -259,23 +334,12 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
 }
 
 @media (max-width:1080px){
-  .corpo{grid-template-columns:1fr; gap:16px}
-  nav.abas{position:static; flex-direction:row; overflow-x:auto; border-bottom:1px solid var(--linha); padding-bottom:2px}
-  nav.abas button{border-left:0; border-bottom:3px solid transparent; white-space:nowrap; border-radius:0}
-  nav.abas button[aria-selected="true"]{border-left:0; border-bottom-color:var(--ciano)}
+  .abas-linha{overflow-x:auto; padding:0 18px}
+  nav.abas button{white-space:nowrap; padding:11px 12px 10px}
   .kpis{grid-template-columns:repeat(2,1fr)}
   .chrome{position:static}
   .marca{padding-left:14px}
-  .rank-linha{
-    grid-template-columns:1fr auto;
-    grid-template-areas:"empresa frac" "badge badge" "barra barra";
-    row-gap:8px;
-  }
-  .rank-linha .empresa{grid-area:empresa}
-  .rank-linha .frac{grid-area:frac}
-  .rank-linha .cel-badge{grid-area:badge}
-  .rank-linha .barra{grid-area:barra}
-  .grupo-head{
+  .grupo-head, .grupo-head.tipo{
     grid-template-columns:1fr 18px;
     grid-template-areas:"empresa chev" "ref ref" "badge badge" "barra barra";
     row-gap:9px;
@@ -285,7 +349,7 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
   .grupo-head .ref{grid-area:ref}
   .grupo-head .cel-badge{grid-area:badge}
   .grupo-head .barra{grid-area:barra}
-  .plano-head{
+  .plano-head, .plano-head.linha-empresa{
     grid-template-columns:1fr 18px;
     grid-template-areas:"nome chev" "meta meta" "barra barra";
     row-gap:7px;
@@ -322,6 +386,14 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
     </div>
     <div class="faixa"></div>
   </header>
+
+  <nav class="abas oculto" id="abasWrap" role="tablist" aria-label="Visões do painel">
+    <div class="abas-linha">
+      <button class="aba" role="tab" data-aba="gerencial" aria-selected="true">Gerencial</button>
+      <button class="aba" role="tab" data-aba="empresa" aria-selected="false">Por Empresa</button>
+      <button class="aba" role="tab" data-aba="entrega" aria-selected="false">Por Entrega</button>
+    </div>
+  </nav>
 
   <div class="filtros oculto" id="filtrosWrap">
     <div class="filtros-linha">
@@ -365,65 +437,92 @@ table.dados td.prazo-venc{color:var(--laranja-texto); font-weight:700; white-spa
   <div id="avisosEnvolucro" class="corpo" style="padding-bottom:0; display:block"><div id="avisos"></div></div>
 
   <div class="corpo">
-    <nav class="abas" role="tablist" aria-label="Visões do painel">
-      <button class="aba" role="tab" data-aba="gerencial" aria-selected="true">Gerencial</button>
-      <button class="aba" role="tab" data-aba="operacional" aria-selected="false">Operacional</button>
-    </nav>
-
     <main>
       <!-- ============ GERENCIAL ============ -->
       <section class="painel-aba" id="abaGerencial">
         <div class="secao-cab">
           <div class="eyebrow">Visão consolidada</div>
           <h2>Avanço dos planos</h2>
-          <p>Indicadores do grupo e risco de prazo por distribuidora.</p>
+          <p id="lede"></p>
         </div>
-
-        <div class="kpis" id="kpis"></div>
 
         <div class="cartao">
           <div class="cartao-cab">
-            <div><div class="eyebrow">Distribuidoras</div><h3>Avanço por distribuidora</h3></div>
-            <div class="nota">clique para abrir o detalhe na aba operacional</div>
+            <div><div class="eyebrow">1 · Onde estamos</div><h3 id="tituloKpis">Avanço por Entrega</h3></div>
           </div>
-          <div id="ranking"></div>
+          <div class="kpis" id="kpis"></div>
         </div>
 
         <div class="cartao">
           <div class="cartao-cab">
-            <div><div class="eyebrow">Prazos</div><h3>Vencimentos</h3></div>
+            <div><div class="eyebrow">2 · Onde está o problema</div><h3>Avanço por Entrega e Distribuidora</h3></div>
+            <div class="nota">clique na sigla para abrir o detalhe da empresa</div>
           </div>
-          <div id="cronograma"></div>
+          <div id="matriz"></div>
         </div>
 
         <div class="cartao">
           <div class="cartao-cab">
-            <div><div class="eyebrow">Risco</div><h3>Entregas em atraso</h3></div>
+            <div><div class="eyebrow">3 · O que fazer agora</div><h3>Atividades em atraso</h3></div>
+            <div class="nota" id="notaAtrasos"></div>
           </div>
           <div id="atrasos"></div>
         </div>
+
+        <div class="cartao">
+          <div class="cartao-cab">
+            <div><div class="eyebrow">4 · O que vem pela frente</div><h3>Quando as atividades vencem</h3></div>
+          </div>
+          <div id="blocoCrono"><div id="cronograma"></div></div>
+          <div class="sub-bloco">
+            <div class="sub-titulo">Calendário de vencimentos por distribuidora</div>
+            <div id="linhaTempo"></div>
+          </div>
+        </div>
       </section>
 
-      <!-- ============ OPERACIONAL ============ -->
-      <section class="painel-aba oculto" id="abaOperacional">
+      <!-- ============ POR EMPRESA ============ -->
+      <section class="painel-aba oculto" id="abaEmpresa">
         <div class="secao-cab">
           <div class="eyebrow">Detalhe</div>
-          <h2>Planos por distribuidora</h2>
-          <p>Etapas, prazos e status de cada entrega.</p>
+          <h2>Entregas por distribuidora</h2>
+          <p>Empresa → entrega → atividade, com prazo e status de cada uma.</p>
         </div>
 
         <div class="cartao-cab" style="margin-bottom:14px">
           <div class="campo" style="flex:1; min-width:220px">
-            <input type="search" id="fBusca" placeholder="Buscar plano ou entrega"
+            <input type="search" id="fBusca" placeholder="Buscar entrega ou atividade"
               style="width:100%; border:1px solid var(--linha-forte); border-radius:var(--raio); padding:7px 11px;">
           </div>
           <div style="display:flex; align-items:center; gap:14px">
             <span class="contagem" id="contagem"></span>
-            <button class="btn" id="btnExpandir">Expandir todos</button>
+            <button class="btn" id="btnExpandirEmpresa">Expandir todos</button>
           </div>
         </div>
 
-        <div id="grupos"></div>
+        <div id="gruposEmpresa"></div>
+      </section>
+
+      <!-- ============ POR ENTREGA ============ -->
+      <section class="painel-aba oculto" id="abaEntrega">
+        <div class="secao-cab">
+          <div class="eyebrow">Detalhe cruzado</div>
+          <h2>Empresas por entrega</h2>
+          <p>Entrega → empresa → atividade — veja como o mesmo tipo de trabalho anda em cada distribuidora.</p>
+        </div>
+
+        <div class="cartao-cab" style="margin-bottom:14px">
+          <div class="campo" style="flex:1; min-width:220px">
+            <input type="search" id="fBuscaEntrega" placeholder="Buscar entrega, empresa ou atividade"
+              style="width:100%; border:1px solid var(--linha-forte); border-radius:var(--raio); padding:7px 11px;">
+          </div>
+          <div style="display:flex; align-items:center; gap:14px">
+            <span class="contagem" id="contagemEntrega"></span>
+            <button class="btn" id="btnExpandirEntrega">Expandir todos</button>
+          </div>
+        </div>
+
+        <div id="gruposEntrega"></div>
       </section>
     </main>
   </div>
@@ -492,6 +591,11 @@ function periodoLabel(p){ return p ? p.sem + 'º sem ' + p.ano : '—'; }
 function periodoOrd(p){ return p.ano * 2 + p.sem; }
 function vencido(p){ return p ? periodoOrd(p) < periodoOrd(REF) : false; }
 function concluido(status){ return /conclu/.test(norm(status)); }
+/* Uma atividade conta como atrasada se a data já passou OU se a própria
+   planilha já marca "Em atraso" no status — os dois sinais valem, não só a data. */
+function estaAtrasada(e){
+  return !concluido(e.status) && (vencido(e.fimEntrega) || /atras/.test(norm(e.status)));
+}
 function pct(f, t){ return t > 0 ? Math.round((f / t) * 1000) / 10 : 0; }
 function fmtPct(p){ return (Number.isInteger(p) ? p : p.toFixed(1)) + '%'; }
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -660,7 +764,7 @@ function recalcular(planos){
   planos.forEach(p => {
     p.entregas = p.entregas || [];
     p.pendentes = p.entregas.filter(e => !concluido(e.status));
-    p.atrasadas = p.pendentes.filter(e => vencido(e.fimEntrega)).length;
+    p.atrasadas = p.pendentes.filter(estaAtrasada).length;
     const fins = p.entregas.map(e => e.fimProjeto).filter(Boolean);
     p.fimProjeto = fins.length ? fins.reduce((a, b) => periodoOrd(b) > periodoOrd(a) ? b : a) : null;
     p.pct = pct(p.feitas, p.total);
@@ -686,59 +790,249 @@ function porEmpresa(planos){
 
 /* ---------- aba gerencial ---------- */
 
-function renderGerencial(){
-  const planos = filtrar({ comBusca: false });
+/* Visão "Todas": um card por tipo de Entrega, % agregado entre as empresas —
+   mais direto pra enxergar qual tipo de trabalho está atrasado no grupo
+   todo do que um único número médio, que esconde a diferença entre tipos. */
+function renderKPIsPorTipo(planos){
+  const porTipo = new Map();
+  planos.forEach(p => {
+    const chave = rotulo(p.plano);
+    if (!porTipo.has(chave)) porTipo.set(chave, { total: 0, feitas: 0 });
+    const t = porTipo.get(chave);
+    t.total += p.total;
+    t.feitas += p.feitas;
+  });
+
+  const cards = [...porTipo.entries()]
+    .map(([nome, t]) => ({ nome, pct: pct(t.feitas, t.total), t }))
+    .sort((a, b) => a.pct - b.pct);
+
+  /* Uma linha só, com as colunas divididas igualmente — assim a faixa de
+     cards termina rente ao cartão de baixo, sem card órfão na segunda linha. */
+  const grid = document.getElementById('kpis');
+  grid.style.gridTemplateColumns = cards.length <= 6
+    ? `repeat(${cards.length}, minmax(0, 1fr))`
+    : 'repeat(auto-fit, minmax(190px, 1fr))';
+
+  grid.innerHTML = cards.map(c => `
+    <div class="kpi">
+      <div class="valor" style="color:${corPorPct(c.pct)}">${fmtPct(c.pct)}</div>
+      <div class="apoio"><b>${esc(c.nome)}</b><br>${c.t.feitas} de ${c.t.total} etapas</div>
+    </div>`).join('');
+}
+
+/* Visão de uma empresa: os quatro indicadores fixos de sempre. */
+function renderKPIsPorEmpresa(planos){
   const totalEtapas = planos.reduce((s, p) => s + p.total, 0);
   const feitas = planos.reduce((s, p) => s + p.feitas, 0);
   const geral = pct(feitas, totalEtapas);
   const atrasadas = planos.reduce((s, p) => s + p.atrasadas, 0);
-  const planosAtrasados = planos.filter(p => p.atrasadas > 0).length;
-  const naoIniciados = planos.filter(p => p.feitas === 0).length;
-  const concluidos = planos.filter(p => p.total > 0 && p.feitas === p.total).length;
-  const empresasPend = new Set(planos.filter(p => p.feitas < p.total).map(p => p.sigla)).size;
+  const entregasAtrasadas = planos.filter(p => p.atrasadas > 0).length;
+  const naoIniciadas = planos.filter(p => p.feitas === 0).length;
+  const concluidas = planos.filter(p => p.total > 0 && p.feitas === p.total).length;
 
   const cards = [
-    { v: fmtPct(geral), l: '% geral concluído', s: feitas + ' de ' + totalEtapas + ' etapas', cor: corPorPct(geral) },
-    { v: String(atrasadas), l: 'Entregas em atraso',
-      s: planosAtrasados + (planosAtrasados === 1 ? ' plano afetado' : ' planos afetados'),
+    { v: fmtPct(geral), l: '% concluído', s: feitas + ' de ' + totalEtapas + ' etapas', cor: corPorPct(geral) },
+    { v: String(atrasadas), l: 'Atividades em atraso',
+      s: entregasAtrasadas + (entregasAtrasadas === 1 ? ' entrega afetada' : ' entregas afetadas'),
       cor: atrasadas > 0 ? 'var(--laranja-texto)' : 'var(--verde-texto)' },
-    { v: String(naoIniciados), l: 'Planos não iniciados', s: 'nenhuma etapa concluída',
-      cor: naoIniciados > 0 ? 'var(--ambar-texto)' : null },
-    { v: concluidos + '/' + planos.length, l: 'Planos concluídos',
-      s: empresasPend + (empresasPend === 1 ? ' empresa com pendência' : ' empresas com pendência') },
+    { v: String(naoIniciadas), l: 'Entregas não iniciadas', s: 'nenhuma etapa concluída',
+      cor: naoIniciadas > 0 ? 'var(--ambar-texto)' : null },
+    { v: concluidas + '/' + planos.length, l: 'Entregas concluídas' },
   ];
 
-  document.getElementById('kpis').innerHTML = cards.map(c => `
+  const grid = document.getElementById('kpis');
+  grid.style.gridTemplateColumns = `repeat(${cards.length}, minmax(0, 1fr))`;
+  grid.innerHTML = cards.map(c => `
     <div class="kpi">
       <div class="valor"${c.cor ? ` style="color:${c.cor}"` : ''}>${c.v}</div>
-      <div class="apoio">${c.l}${c.s ? ' · ' + c.s : ''}</div>
+      <div class="apoio"><b>${c.l}</b>${c.s ? '<br>' + c.s : ''}</div>
     </div>`).join('');
+}
 
-  document.getElementById('ranking').innerHTML = porEmpresa(planos).map(g => `
-    <div class="rank-linha" data-ir="${esc(g.sigla)}" tabindex="0" role="button">
-      <span class="empresa"><span class="sigla">${esc(g.sigla)}</span>${esc(g.ref.distribuidora)}</span>
-      <span class="cel-badge">${badge(g)}</span>
-      ${barra(g.pct)}
-      <span class="frac">${g.feitas}/${g.total}</span>
-    </div>`).join('');
+function renderKPIs(planos){
+  const titulo = document.getElementById('tituloKpis');
+  if (EMPRESA_SEL === 'all'){
+    titulo.textContent = 'Avanço por Entrega';
+    renderKPIsPorTipo(planos);
+  } else {
+    titulo.textContent = 'Situação de ' + EMPRESA_SEL;
+    renderKPIsPorEmpresa(planos);
+  }
+}
+
+/* Frase de abertura: resume a situação em texto, para quem lê o painel
+   de relance não precisar interpretar quatro números soltos. */
+function renderLede(planos){
+  const total = planos.reduce((s, p) => s + p.total, 0);
+  const feitas = planos.reduce((s, p) => s + p.feitas, 0);
+  const atrasadas = planos.reduce((s, p) => s + p.atrasadas, 0);
+  const empresasAtraso = new Set(planos.filter(p => p.atrasadas > 0).map(p => p.sigla)).size;
+  const vencemAgora = planos.reduce((s, p) =>
+    s + p.pendentes.filter(e => e.fimEntrega && periodoOrd(e.fimEntrega) === periodoOrd(REF)).length, 0);
+
+  const partes = [`<b>${fmtPct(pct(feitas, total))}</b> das ${total} etapas concluídas`];
+
+  if (atrasadas) partes.push(
+    `<b style="color:var(--laranja-texto)">${atrasadas}</b> ${atrasadas === 1 ? 'atividade em atraso' : 'atividades em atraso'}` +
+    ` em ${empresasAtraso} ${empresasAtraso === 1 ? 'distribuidora' : 'distribuidoras'}`);
+  else partes.push('nenhuma atividade em atraso');
+
+  if (vencemAgora) partes.push(
+    `<b style="color:var(--ambar-texto)">${vencemAgora}</b> ${vencemAgora === 1 ? 'vence' : 'vencem'} em ${periodoLabel(REF)}`);
+
+  document.getElementById('lede').innerHTML = partes.join(' · ');
+}
+
+/* Matriz entrega × distribuidora: responde "quem está atrasado em quê"
+   numa tela só, no lugar de uma lista de ranking que só dava a média
+   por empresa e escondia qual frente estava travada. */
+function renderMatriz(planos){
+  const alvo = document.getElementById('matriz');
+  const tipos = porTipoDeEntrega(planos);
+  const empresas = porEmpresa(planos);
+
+  if (!tipos.length || !empresas.length){
+    alvo.innerHTML = '<div class="vazio">Sem dados para os filtros atuais.</div>';
+    return;
+  }
+
+  const chave = (sigla, tipo) => sigla + '||' + tipo;
+  const celulas = new Map();
+  planos.forEach(p => {
+    const k = chave(p.sigla, rotulo(p.plano));
+    if (!celulas.has(k)) celulas.set(k, { total: 0, feitas: 0, atrasadas: 0 });
+    const c = celulas.get(k);
+    c.total += p.total; c.feitas += p.feitas; c.atrasadas += p.atrasadas;
+  });
+
+  const celHTML = (dado, extra) => {
+    if (!dado || !dado.total) return `<div class="matriz-cel vazia ${extra}">—</div>`;
+    const v = pct(dado.feitas, dado.total);
+    const cor = corPorPct(v);
+    const risco = dado.atrasadas > 0 ? ' tem-atraso' : '';
+    const titulo = `${dado.feitas}/${dado.total} etapas` +
+      (dado.atrasadas ? ` · ${dado.atrasadas} em atraso` : '');
+    return `<div class="matriz-cel${risco} ${extra}" title="${esc(titulo)}"
+      style="background:${cor.replace('rgb(', 'rgba(').replace(')', ', .18)')}; color:${cor}">${fmtPct(v)}</div>`;
+  };
+
+  /* Uma matriz existe para comparar colunas. Com uma única distribuidora
+     filtrada ela vira uma coluna solta num grid largo — nesse caso a lista
+     com barra comunica melhor e ocupa a largura sem buracos. */
+  if (empresas.length === 1){
+    const g = empresas[0];
+    const linhasLista = tipos.map(t => {
+      const d = celulas.get(chave(g.sigla, t.nome));
+      if (!d || !d.total) return '';
+      const v = pct(d.feitas, d.total);
+      return `<div class="lista-linha">
+        <span class="lista-nome" title="${esc(t.nome)}">${esc(t.nome)}</span>
+        <span class="cel-badge">${badge({ atrasadas: d.atrasadas, total: d.total, feitas: d.feitas })}</span>
+        <span class="lista-frac">${d.feitas}/${d.total}</span>
+        ${barra(v)}
+      </div>`;
+    }).join('');
+
+    const tg = { total: g.total, feitas: g.feitas, atrasadas: g.atrasadas };
+    alvo.innerHTML = linhasLista + `
+      <div class="lista-linha total">
+        <span class="lista-nome">Geral da distribuidora</span>
+        <span class="cel-badge">${badge(tg)}</span>
+        <span class="lista-frac">${tg.feitas}/${tg.total}</span>
+        ${barra(pct(tg.feitas, tg.total))}
+      </div>`;
+    return;
+  }
+
+  /* A coluna "Geral" por linha repetiria os cards do bloco acima quando a
+     visão é do grupo todo; só faz sentido quando há uma empresa filtrada. */
+  const comGeral = EMPRESA_SEL !== 'all';
+
+  const cabecalho = ['<div class="matriz-cab canto"></div>']
+    .concat(empresas.map(g =>
+      `<div class="matriz-cab" data-ir="${esc(g.sigla)}" title="${esc(g.ref.distribuidora)}" tabindex="0" role="button">${esc(g.sigla)}</div>`))
+    .concat(comGeral ? ['<div class="matriz-cab canto">Geral</div>'] : [])
+    .join('');
+
+  const linhas = tipos.map(t => {
+    const cels = empresas.map(g => celHTML(celulas.get(chave(g.sigla, t.nome)), '')).join('');
+    const geral = comGeral ? celHTML({ total: t.total, feitas: t.feitas, atrasadas: t.atrasadas }, 'geral') : '';
+    return `<div class="matriz-rot" title="${esc(t.nome)}">${esc(t.nome)}</div>${cels}${geral}`;
+  }).join('');
+
+  const totalGeral = planos.reduce((a, p) => ({
+    total: a.total + p.total, feitas: a.feitas + p.feitas, atrasadas: a.atrasadas + p.atrasadas,
+  }), { total: 0, feitas: 0, atrasadas: 0 });
+
+  const linhaGeral = '<div class="matriz-rot geral">Geral da distribuidora</div>' +
+    empresas.map(g => celHTML({ total: g.total, feitas: g.feitas, atrasadas: g.atrasadas }, 'geral')).join('') +
+    (comGeral ? celHTML(totalGeral, 'geral') : '');
+
+  alvo.innerHTML = `
+    <div class="rolagem">
+      <div class="matriz" style="grid-template-columns:minmax(210px,1.6fr) repeat(${empresas.length}, minmax(52px,${empresas.length <= 3 ? '110px' : '1fr'}))${comGeral ? ' 62px' : ''}">
+        ${cabecalho}${linhas}${linhaGeral}
+      </div>
+    </div>
+    <div class="matriz-legenda">
+      <span><i class="esc-cor"></i> Cor da célula: % concluído, de laranja a verde</span>
+      <span><i class="risco"></i> Há atividade em atraso</span>
+      <span><i class="sem-dado">—</i> Distribuidora não tem essa entrega</span>
+    </div>`;
+
+  alvo.querySelectorAll('[data-ir]').forEach(cab => {
+    const ir = () => {
+      EMPRESA_SEL = cab.dataset.ir;
+      document.getElementById('fSituacao').value = 'all';
+      document.getElementById('fBusca').value = '';
+      atualizarChips();
+      trocarAba('empresa');
+      renderTudo();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    cab.addEventListener('click', ir);
+    cab.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); ir(); } });
+  });
+}
+
+function renderGerencial(){
+  const planos = filtrar({ comBusca: false });
+
+  renderKPIs(planos);
+  renderLede(planos);
+  renderMatriz(planos);
 
   const atraso = [];
-  planos.forEach(p => p.pendentes.filter(e => vencido(e.fimEntrega)).forEach(e => atraso.push({ p, e })));
+  planos.forEach(p => p.pendentes.filter(estaAtrasada).forEach(e => atraso.push({ p, e })));
   atraso.sort((a, b) => periodoOrd(a.e.fimEntrega) - periodoOrd(b.e.fimEntrega));
 
+  /* "Status" só repetia "Em atraso" linha a linha. O que falta para priorizar
+     é há quanto tempo venceu — por isso a coluna virou o tamanho do atraso. */
+  const atrasoSemestres = e => e.fimEntrega ? periodoOrd(REF) - periodoOrd(e.fimEntrega) : 0;
+  const rotuloAtraso = n => n <= 0 ? 'vence agora' : (n === 1 ? '1 semestre' : n + ' semestres');
+
   document.getElementById('atrasos').innerHTML = atraso.length ? `
-    <div class="rolagem"><table class="dados">
-      <thead><tr><th>Plano</th><th>Empresa</th><th>Entrega</th><th>Prazo</th><th>Status</th></tr></thead>
+    <div class="rolagem tabela-alta"><table class="dados t-atrasos">
+      <thead><tr><th>Empresa</th><th>Entrega</th><th>Atividade</th><th>Prazo</th><th>Vencida há</th></tr></thead>
       <tbody>${atraso.map(({ p, e }) => `
         <tr>
-          <td title="${esc(p.plano)}">${esc(rotulo(p.plano))}</td>
           <td><span class="sigla">${esc(p.sigla)}</span></td>
+          <td title="${esc(p.plano)}">${esc(rotulo(p.plano))}</td>
           <td>${esc(e.entrega)}</td>
-          <td class="prazo-venc">${periodoLabel(e.fimEntrega)}</td>
-          <td>${esc(cap(e.status) || '—')}</td>
+          <td>${periodoLabel(e.fimEntrega)}</td>
+          <td class="prazo-venc">${rotuloAtraso(atrasoSemestres(e))}</td>
         </tr>`).join('')}</tbody>
     </table></div>` :
-    '<div class="vazio">Nenhuma entrega com prazo vencido.</div>';
+    '<div class="tudo-certo">Nenhuma atividade em atraso — todas as pendências estão dentro do prazo.</div>';
+
+  const empresasComAtraso = new Set(atraso.map(a => a.p.sigla)).size;
+  const maisAntiga = atraso.length ? atraso[0].e.fimEntrega : null;
+  document.getElementById('notaAtrasos').textContent = atraso.length
+    ? `${atraso.length} ${atraso.length === 1 ? 'atividade' : 'atividades'} · ` +
+      `${empresasComAtraso} ${empresasComAtraso === 1 ? 'distribuidora' : 'distribuidoras'} · ` +
+      `mais antiga vencida em ${periodoLabel(maisAntiga)}`
+    : '';
 
   const buckets = new Map();
   let semPrazo = 0;
@@ -749,28 +1043,48 @@ function renderGerencial(){
     buckets.get(k).n++;
   }));
 
-  const cols = [...buckets.values()].sort((a, b) => periodoOrd(a.p) - periodoOrd(b.p));
-  const maxN = Math.max(1, ...cols.map(c => c.n));
   const ordRef = periodoOrd(REF);
+  const ordsBucket = [...buckets.keys()];
 
-  const nVencidas = cols.filter(c => periodoOrd(c.p) < ordRef).reduce((s, c) => s + c.n, 0);
-  const nAtual = cols.filter(c => periodoOrd(c.p) === ordRef).reduce((s, c) => s + c.n, 0);
-  const nFuturas = cols.filter(c => periodoOrd(c.p) > ordRef).reduce((s, c) => s + c.n, 0);
+  /* Eixo contínuo: semestre sem pendência vira coluna vazia em vez de sumir.
+     Colapsar o buraco encostaria 2º/25 em 1º/26 como se fossem vizinhos e
+     esconderia o semestre corrente quando ele não tem vencimento. */
+  const cols = [];
+  if (ordsBucket.length){
+    const de = Math.min(...ordsBucket, ordRef);
+    const ate = Math.max(...ordsBucket, ordRef);
+    for (let o = de; o <= ate; o++){
+      const ano = Math.floor((o - 1) / 2);
+      const sem = o - ano * 2;
+      const b = buckets.get(o);
+      cols.push({ p: b ? b.p : { ano, sem }, n: b ? b.n : 0, ord: o });
+    }
+  }
+
+  const maxN = Math.max(1, ...cols.map(c => c.n));
+
+  const nVencidas = cols.filter(c => c.ord < ordRef).reduce((s, c) => s + c.n, 0);
+  const nAtual = cols.filter(c => c.ord === ordRef).reduce((s, c) => s + c.n, 0);
+  const nFuturas = cols.filter(c => c.ord > ordRef).reduce((s, c) => s + c.n, 0);
 
   document.getElementById('cronograma').innerHTML = cols.length ? `
     <div class="crono-resumo">
-      <span><b class="c-venc">${nVencidas}</b> vencidas</span>
-      <span><b class="c-atual">${nAtual}</b> no semestre atual</span>
-      <span><b class="c-fut">${nFuturas}</b> nos semestres seguintes</span>
+      <span><b class="${nVencidas ? 'c-venc' : 'c-zero'}">${nVencidas}</b> vencidas</span>
+      <span><b class="${nAtual ? 'c-atual' : 'c-zero'}">${nAtual}</b> no semestre atual</span>
+      <span><b class="${nFuturas ? 'c-fut' : 'c-zero'}">${nFuturas}</b> nos semestres seguintes</span>
       ${semPrazo ? `<span><b>${semPrazo}</b> sem prazo informado</span>` : ''}
     </div>
-    <div class="crono-cols">
+    <div class="crono-cols${cols.length <= 4 ? ' poucas' : ''}">
       ${cols.map(c => {
-        const ord = periodoOrd(c.p);
+        const ord = c.ord;
         const classe = ord < ordRef ? 'venc' : (ord === ordRef ? 'atual' : 'fut');
         const marco = ord === ordRef ? ' marco' : '';
         const h = Math.round(c.n / maxN * 100);
-        return `<div class="crono-col${marco}" title="${c.n} entrega(s) com prazo em ${periodoLabel(c.p)}">
+        if (!c.n) return `<div class="crono-col vazia${marco}" title="Nenhuma atividade vence em ${periodoLabel(c.p)}">
+          <span class="crono-haste"></span>
+          <span class="crono-lab">${c.p.sem}º/${String(c.p.ano).slice(2)}</span>
+        </div>`;
+        return `<div class="crono-col${marco}" title="${c.n} atividade(s) com prazo em ${periodoLabel(c.p)}">
           <span class="crono-haste">
             <span class="crono-bar ${classe}" style="height:${h}%"></span>
             <span class="crono-val" style="bottom:calc(${h}% + 6px)">${c.n}</span>
@@ -779,30 +1093,104 @@ function renderGerencial(){
         </div>`;
       }).join('')}
     </div>
-    <div class="crono-nota">Linha tracejada marca o semestre corrente (${periodoLabel(REF)}).</div>` :
-    '<div class="vazio">Nenhuma entrega pendente com prazo informado.</div>';
+    <div class="crono-nota">${
+      nVencidas && !nAtual && !nFuturas
+        ? 'Todo o trabalho pendente já venceu — não há nada programado para os próximos semestres.'
+        : (!nVencidas && !nAtual && nFuturas
+            ? 'Nada vencido e nada para este semestre — o pendente está todo à frente no cronograma.'
+            : `Coluna destacada: semestre corrente (${periodoLabel(REF)}). Semestres sem vencimento aparecem vazios para o eixo não distorcer.`)
+    }</div>` :
+    '<div class="tudo-certo">Nenhuma atividade pendente — todas as etapas com prazo já foram concluídas.</div>';
 
-  document.querySelectorAll('[data-ir]').forEach(linha => {
-    const ir = () => {
-      EMPRESA_SEL = linha.dataset.ir;
-      document.getElementById('fSituacao').value = 'all';
-      document.getElementById('fBusca').value = '';
-      atualizarChips();
-      trocarAba('operacional');
-      renderTudo();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    linha.addEventListener('click', ir);
-    linha.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); ir(); } });
-  });
+  renderLinhaTempo(planos);
 }
 
-/* ---------- aba operacional ---------- */
+/* ---------- linha do tempo das entregas ---------- */
+
+function renderLinhaTempo(planos){
+  const alvo = document.getElementById('linhaTempo');
+  const linhas = porEmpresa(planos);
+
+  const porSigla = new Map();
+  let ords = [];
+  linhas.forEach(g => {
+    const ativs = [];
+    g.lista.forEach(p => p.entregas.forEach(e => { if (e.fimEntrega) ativs.push(e); }));
+    porSigla.set(g.sigla, ativs);
+    ativs.forEach(e => ords.push(periodoOrd(e.fimEntrega)));
+  });
+
+  if (!ords.length){
+    alvo.closest('.sub-bloco').classList.add('oculto');
+    return;
+  }
+  alvo.closest('.sub-bloco').classList.remove('oculto');
+
+  const minOrd = Math.min(...ords), maxOrd = Math.max(...ords), ordRef = periodoOrd(REF);
+  const periodos = [];
+  for (let o = Math.min(minOrd, ordRef); o <= Math.max(maxOrd, ordRef); o++){
+    const ano = Math.floor((o - 1) / 2);
+    const sem = o - ano * 2;
+    periodos.push({ ano, sem, ord: o });
+  }
+
+  const cabecalho = ['<div class="tempo-rot"></div>']
+    .concat(periodos.map(p => `<div class="tempo-cab${p.ord === ordRef ? ' marco' : ''}">${p.sem}º/${String(p.ano).slice(2)}</div>`))
+    .concat(['<div class="tempo-cab total">Total</div>'])
+    .join('');
+
+  /* Uma célula por empresa×período, colorida pela pior situação presente ali.
+     Períodos sem nada ficam em branco, sem borda, para a grade não competir
+     com o dado. */
+  const corpo = linhas.filter(g => (porSigla.get(g.sigla) || []).length).map(g => {
+    const ativs = porSigla.get(g.sigla) || [];
+    const rotuloLinha = `<div class="tempo-rot" title="${esc(g.ref.distribuidora)}"><span class="sigla">${esc(g.sigla)}</span></div>`;
+    const celulas = periodos.map(p => {
+      const doPeriodo = ativs.filter(e => periodoOrd(e.fimEntrega) === p.ord);
+      if (!doPeriodo.length) return `<div class="tempo-cel vazia${p.ord === ordRef ? ' marco' : ''}"></div>`;
+
+      const nAtraso = doPeriodo.filter(estaAtrasada).length;
+      const nConcluida = doPeriodo.filter(e => concluido(e.status)).length;
+      const nPendente = doPeriodo.length - nAtraso - nConcluida;
+
+      let tom = 'pendente';
+      if (nAtraso > 0) tom = 'atraso';
+      else if (nConcluida === doPeriodo.length) tom = 'ok';
+
+      const partes = [];
+      if (nAtraso) partes.push(nAtraso + ' em atraso');
+      if (nConcluida) partes.push(nConcluida + (nConcluida > 1 ? ' concluídas' : ' concluída'));
+      if (nPendente) partes.push(nPendente + (nPendente > 1 ? ' pendentes' : ' pendente'));
+      const titulo = `${g.ref.distribuidora} · ${periodoLabel(p)} · ${partes.join(', ')}`;
+
+      return `<div class="tempo-cel tom-${tom}${p.ord === ordRef ? ' marco' : ''}" title="${esc(titulo)}">${doPeriodo.length}</div>`;
+    }).join('');
+    const total = `<div class="tempo-cel total" title="${esc(g.ref.distribuidora)}: ${ativs.length} atividades com prazo">${ativs.length}</div>`;
+    return rotuloLinha + celulas + total;
+  }).join('');
+
+  alvo.innerHTML = `
+    <div class="rolagem">
+      <div class="tempo-grid" style="grid-template-columns:56px repeat(${periodos.length}, minmax(38px,${periodos.length <= 4 ? '86px' : '1fr'})) 52px">
+        ${cabecalho}${corpo}
+      </div>
+    </div>
+    <div class="tempo-legenda">
+      <span><i class="am-ok"></i> Todas concluídas</span>
+      <span><i class="am-atraso"></i> Alguma em atraso</span>
+      <span><i class="am-pendente"></i> Pendente, no prazo</span>
+      <span><i class="am-marco"></i> Semestre corrente (${periodoLabel(REF)})</span>
+    </div>
+    <div class="tempo-nota">O número em cada célula é a quantidade de atividades que vencem naquele semestre.</div>`;
+}
+
+/* ---------- filtro comum às três abas ---------- */
 
 function filtrar(opts){
   const ano = document.getElementById('fAno').value;
   const sit = document.getElementById('fSituacao').value;
-  const busca = (opts && opts.comBusca === false) ? '' : norm(document.getElementById('fBusca').value);
+  const buscaEl = (opts && opts.buscaId) ? document.getElementById(opts.buscaId) : null;
+  const busca = (opts && opts.comBusca === false) ? '' : norm(buscaEl ? buscaEl.value : '');
 
   return PLANOS.filter(p => {
     if (EMPRESA_SEL !== 'all' && p.sigla !== EMPRESA_SEL) return false;
@@ -820,55 +1208,18 @@ function filtrar(opts){
   });
 }
 
-function renderOperacional(){
-  const planos = filtrar();
-  const alvo = document.getElementById('grupos');
+/* Marcação de uma linha "atividade" — reaproveitada pelas duas abas de detalhe. */
+function linhaAtividade(e){
+  const ok = concluido(e.status);
+  const atrasada = !ok && estaAtrasada(e);
+  return `<div class="entrega${ok ? ' concluida' : ''}${atrasada ? ' vencida' : ''}">
+    <span class="nome">${esc(e.entrega)}</span>
+    <span class="data">${periodoLabel(e.fimEntrega)}</span>
+    <span class="status">${atrasada ? 'Em atraso' : esc(cap(e.status) || '—')}</span>
+  </div>`;
+}
 
-  document.getElementById('btnExpandir').textContent = 'Expandir todos';
-
-  if (!planos.length){
-    alvo.innerHTML = '<div class="vazio">Nenhum plano para esses filtros.</div>';
-    return;
-  }
-
-  alvo.innerHTML = porEmpresa(planos).map(g => {
-    const planosHtml = [...g.lista]
-      .sort((a, b) => (b.atrasadas > 0) - (a.atrasadas > 0) || a.pct - b.pct)
-      .map(p => {
-        const entregasHtml = p.entregas.length ? p.entregas.map(e => {
-          const ok = concluido(e.status);
-          const atrasada = !ok && vencido(e.fimEntrega);
-          return `<div class="entrega${ok ? ' concluida' : ''}${atrasada ? ' vencida' : ''}">
-            <span class="nome">${esc(e.entrega)}</span>
-            <span class="data">${periodoLabel(e.fimEntrega)}</span>
-            <span class="status">${atrasada ? 'Em atraso' : esc(cap(e.status) || '—')}</span>
-          </div>`;
-        }).join('') : '<div class="entrega"><span class="nome">Sem detalhe de etapas na planilha</span></div>';
-
-        return `<div class="plano">
-          <div class="plano-head" data-plano tabindex="0" role="button" aria-expanded="false">
-            <span class="plano-nome" title="${esc(p.plano)}">${esc(rotulo(p.plano))}</span>
-            <span class="prazo">${p.fimProjeto ? 'prazo ' + periodoLabel(p.fimProjeto) : ''}</span>
-            <span class="etapas-frac">${p.feitas}/${p.total}</span>
-            ${barra(p.pct)}
-            <span class="chevron"></span>
-          </div>
-          <div class="entregas">${entregasHtml}</div>
-        </div>`;
-      }).join('');
-
-    return `<div class="grupo">
-      <div class="grupo-head" data-grupo tabindex="0" role="button" aria-expanded="false">
-        <span class="empresa"><span class="sigla">${esc(g.sigla)}</span>${esc(g.ref.distribuidora)}</span>
-        <span class="ref">${esc(g.ref.processo)}${g.ref.nt ? '<br>' + esc(g.ref.nt) : ''}</span>
-        <span class="cel-badge">${badge(g)}</span>
-        ${barra(g.pct)}
-        <span class="chevron"></span>
-      </div>
-      <div class="grupo-body">${planosHtml}</div>
-    </div>`;
-  }).join('');
-
+function ligarToggles(alvo){
   const liga = (sel, classe) => alvo.querySelectorAll(sel).forEach(head => {
     const acao = ev => {
       ev.stopPropagation();
@@ -885,6 +1236,115 @@ function renderOperacional(){
   liga('[data-plano]', '.plano');
 }
 
+/* ---------- aba Por Empresa: empresa → entrega → atividade ---------- */
+
+function renderPorEmpresa(){
+  const planos = filtrar({ buscaId: 'fBusca' });
+  const alvo = document.getElementById('gruposEmpresa');
+
+  document.getElementById('btnExpandirEmpresa').textContent = 'Expandir todos';
+
+  if (!planos.length){
+    alvo.innerHTML = '<div class="vazio">Nenhuma entrega para esses filtros.</div>';
+    return;
+  }
+
+  alvo.innerHTML = porEmpresa(planos).map(g => {
+    const planosHtml = [...g.lista]
+      .sort((a, b) => (b.atrasadas > 0) - (a.atrasadas > 0) || a.pct - b.pct)
+      .map(p => {
+        const entregasHtml = p.entregas.length ? p.entregas.map(linhaAtividade).join('') :
+          '<div class="entrega"><span class="nome">Sem detalhe de atividades na planilha</span></div>';
+
+        return `<div class="plano">
+          <div class="plano-head" data-plano tabindex="0" role="button" aria-expanded="false">
+            <span class="plano-nome" title="${esc(p.plano)}">${esc(rotulo(p.plano))}</span>
+            <span class="prazo">${p.fimProjeto ? 'prazo ' + periodoLabel(p.fimProjeto) : ''}</span>
+            <span class="etapas-frac">${p.feitas}/${p.total}</span>
+            ${barra(p.pct)}
+            <span class="chevron"></span>
+          </div>
+          <div class="entregas">${entregasHtml}</div>
+        </div>`;
+      }).join('');
+
+    return `<div class="grupo">
+      <div class="grupo-head" data-grupo tabindex="0" role="button" aria-expanded="false">
+        <span class="empresa" title="${esc(g.ref.distribuidora)}"><span class="sigla">${esc(g.sigla)}</span></span>
+        <span class="ref">${esc(g.ref.processo)}${g.ref.nt ? '<br>' + esc(g.ref.nt) : ''}</span>
+        <span class="cel-badge">${badge(g)}</span>
+        ${barra(g.pct)}
+        <span class="chevron"></span>
+      </div>
+      <div class="grupo-body">${planosHtml}</div>
+    </div>`;
+  }).join('');
+
+  ligarToggles(alvo);
+}
+
+/* ---------- aba Por Entrega: entrega → empresa → atividade ---------- */
+
+function porTipoDeEntrega(planos){
+  const mapa = new Map();
+  planos.forEach(p => {
+    const chave = rotulo(p.plano);
+    if (!mapa.has(chave)) mapa.set(chave, []);
+    mapa.get(chave).push(p);
+  });
+  return [...mapa.entries()].map(([nome, lista]) => {
+    const total = lista.reduce((s, p) => s + p.total, 0);
+    const feitas = lista.reduce((s, p) => s + p.feitas, 0);
+    const atrasadas = lista.reduce((s, p) => s + p.atrasadas, 0);
+    return { nome, lista, total, feitas, atrasadas, pct: pct(feitas, total) };
+  }).sort((a, b) => (b.atrasadas > 0) - (a.atrasadas > 0) || a.pct - b.pct);
+}
+
+function renderPorEntrega(){
+  const planos = filtrar({ buscaId: 'fBuscaEntrega' });
+  const alvo = document.getElementById('gruposEntrega');
+
+  document.getElementById('btnExpandirEntrega').textContent = 'Recolher todos';
+
+  if (!planos.length){
+    alvo.innerHTML = '<div class="vazio">Nenhuma entrega para esses filtros.</div>';
+    return;
+  }
+
+  alvo.innerHTML = porTipoDeEntrega(planos).map(t => {
+    const empresasHtml = [...t.lista]
+      .sort((a, b) => (b.atrasadas > 0) - (a.atrasadas > 0) || a.pct - b.pct)
+      .map(p => {
+        const entregasHtml = p.entregas.length ? p.entregas.map(linhaAtividade).join('') :
+          '<div class="entrega"><span class="nome">Sem detalhe de atividades na planilha</span></div>';
+
+        return `<div class="plano">
+          <div class="plano-head linha-empresa" data-plano tabindex="0" role="button" aria-expanded="false">
+            <span class="plano-nome" title="${esc(p.distribuidora)}"><span class="sigla">${esc(p.sigla)}</span></span>
+            <span class="prazo">${p.fimProjeto ? 'prazo ' + periodoLabel(p.fimProjeto) : ''}</span>
+            <span class="etapas-frac">${p.feitas}/${p.total}</span>
+            ${barra(p.pct)}
+            <span class="chevron"></span>
+          </div>
+          <div class="entregas">${entregasHtml}</div>
+        </div>`;
+      }).join('');
+
+    return `<div class="grupo aberto">
+      <div class="grupo-head tipo" data-grupo tabindex="0" role="button" aria-expanded="true">
+        <span class="empresa">${esc(t.nome)}</span>
+        <span class="ref">${t.lista.length} ${t.lista.length === 1 ? 'empresa' : 'empresas'}</span>
+        <span class="cel-badge">${badge(t)}</span>
+        ${barra(t.pct)}
+        <span class="chevron"></span>
+      </div>
+      <div class="grupo-body">${empresasHtml}</div>
+    </div>`;
+  }).join('');
+
+  ligarToggles(alvo);
+}
+
 /* ---------- abas ---------- */
 
 function trocarAba(nome){
@@ -893,7 +1353,8 @@ function trocarAba(nome){
     b.setAttribute('aria-selected', String(ativa));
   });
   document.getElementById('abaGerencial').classList.toggle('oculto', nome !== 'gerencial');
-  document.getElementById('abaOperacional').classList.toggle('oculto', nome !== 'operacional');
+  document.getElementById('abaEmpresa').classList.toggle('oculto', nome !== 'empresa');
+  document.getElementById('abaEntrega').classList.toggle('oculto', nome !== 'entrega');
 }
 
 /* ---------- chips de empresa ---------- */
@@ -924,10 +1385,14 @@ function popularFiltros(){
 }
 
 function renderTudo(){
-  document.getElementById('contagem').textContent =
-    filtrar().length + (filtrar().length === 1 ? ' plano' : ' planos');
+  const contarBusca = id => filtrar({ buscaId: id }).length;
+  const n1 = contarBusca('fBusca');
+  document.getElementById('contagem').textContent = n1 + (n1 === 1 ? ' entrega' : ' entregas');
+  const n2 = contarBusca('fBuscaEntrega');
+  document.getElementById('contagemEntrega').textContent = n2 + (n2 === 1 ? ' entrega' : ' entregas');
   renderGerencial();
-  renderOperacional();
+  renderPorEmpresa();
+  renderPorEntrega();
 }
 
 /* ---------- publicação: dados.json ao lado do index.html ---------- */
@@ -937,6 +1402,7 @@ function ativarPainel(rotuloArquivo, planos, nota){
   EMPRESA_SEL = 'all';
   document.getElementById('envolucroDropzone').classList.add('oculto');
   document.getElementById('filtrosWrap').classList.remove('oculto');
+  document.getElementById('abasWrap').classList.remove('oculto');
   document.getElementById('painel').classList.remove('oculto');
   document.getElementById('nomeArquivo').textContent = rotuloArquivo;
   document.getElementById('rodape').innerHTML =
@@ -1039,14 +1505,19 @@ document.getElementById('btnJSON').addEventListener('click', baixarJSON);
 document.querySelectorAll('nav.abas .aba').forEach(b =>
   b.addEventListener('click', () => trocarAba(b.dataset.aba)));
 
-document.getElementById('btnExpandir').addEventListener('click', e => {
-  const abrir = e.target.textContent.trim() === 'Expandir todos';
-  document.querySelectorAll('#grupos .grupo').forEach(g => g.classList.toggle('aberto', abrir));
-  e.target.textContent = abrir ? 'Recolher todos' : 'Expandir todos';
-});
+function ligarExpandir(btnId, gruposId){
+  document.getElementById(btnId).addEventListener('click', e => {
+    const abrir = e.target.textContent.trim() === 'Expandir todos';
+    document.querySelectorAll('#' + gruposId + ' .grupo').forEach(g => g.classList.toggle('aberto', abrir));
+    e.target.textContent = abrir ? 'Recolher todos' : 'Expandir todos';
+  });
+}
+ligarExpandir('btnExpandirEmpresa', 'gruposEmpresa');
+ligarExpandir('btnExpandirEntrega', 'gruposEntrega');
 
 ['fAno', 'fSituacao'].forEach(id => document.getElementById(id).addEventListener('change', renderTudo));
-document.getElementById('fBusca').addEventListener('input', renderOperacional);
+document.getElementById('fBusca').addEventListener('input', renderPorEmpresa);
+document.getElementById('fBuscaEntrega').addEventListener('input', renderPorEntrega);
 
 /* Triplo clique na logo revela a barra de origem/exportação — mesmo
    gatilho discreto usado no painel de glosa para a aba oculta "Dados". */
