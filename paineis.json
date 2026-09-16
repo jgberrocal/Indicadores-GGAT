@@ -16,11 +16,11 @@
     "descricao": "IPCA, IGP-M, Selic e PIB acompanhados junto às projeções do Boletim Focus, para dar base às análises regulatórias e tarifárias da gerência."
   },
   {
-    "titulo": "Calendários RTP's e RTA's",
+    "titulo": "Calendários RTP's e FiA's",
     "pasta": "rtp-rta/",
     "escopo": "Ciclo tarifário",
     "cor": "ambar",
     "publicado": true,
-    "descricao": "Agenda consolidada das Revisões e Reajustes Tarifários por distribuidora, com os marcos e prazos de cada etapa do processo junto ao regulador."
+    "descricao": "Agenda consolidada das Revisões Tarifárias Periódicas e Fiscalizações Anuais por distribuidora, com os marcos e prazos de cada etapa do processo junto ao regulador."
   }
 ]
