@@ -1,0 +1,26 @@
+[
+  {
+    "titulo": "Acompanhamento Planos ANEEL",
+    "pasta": "planos-aneel/",
+    "escopo": "Regulatório · ANEEL",
+    "cor": "ciano",
+    "publicado": true,
+    "descricao": "Situação dos planos de ação das distribuidoras junto à ANEEL, com ranking por criticidade, vencimentos por semestre e detalhamento operacional por empresa."
+  },
+  {
+    "titulo": "Indicadores Macroeconômicos",
+    "pasta": "macro-brasil/",
+    "escopo": "Macroeconomia",
+    "cor": "lima",
+    "publicado": true,
+    "descricao": "IPCA, IGP-M, Selic e PIB acompanhados junto às projeções do Boletim Focus, para dar base às análises regulatórias e tarifárias da gerência."
+  },
+  {
+    "titulo": "Calendários RTP's e RTA's",
+    "pasta": "rtp-rta/",
+    "escopo": "Ciclo tarifário",
+    "cor": "ambar",
+    "publicado": true,
+    "descricao": "Agenda consolidada das Revisões e Reajustes Tarifários por distribuidora, com os marcos e prazos de cada etapa do processo junto ao regulador."
+  }
+]
