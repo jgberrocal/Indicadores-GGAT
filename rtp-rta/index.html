@@ -24,6 +24,7 @@
   --raio:4px;
   --sombra:0 1px 0 rgba(31,31,76,.03), 0 12px 28px -24px rgba(31,31,76,.55);
   --rtp-bg:#FFF6E3; --rtp-bd:#FBAE40;
+  --rtpf-bg:#FCE7DC; --rtpf-bd:#F26B43;
   --anu-bg:#EAF6FA; --anu-bd:#009EC1;
 }
 *{box-sizing:border-box}
@@ -89,10 +90,12 @@ body{background:var(--fundo);color:var(--tinta);font-family:var(--sans);font-siz
 .ev{border-radius:var(--raio);padding:8px 10px;border-left:3px solid transparent;
   background:var(--superficie-2);min-height:62px}
 .ev.rtp{background:var(--rtp-bg);border-left-color:var(--rtp-bd)}
+.ev.rtp.comfisc{background:var(--rtpf-bg);border-left-color:var(--rtpf-bd);border-left-width:4px}
 .ev.anual{background:var(--anu-bg);border-left-color:var(--anu-bd)}
 .ev .t{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;
   color:var(--tinta-2);margin-bottom:4px}
 .ev.rtp .t{color:#A9700D}
+.ev.rtp.comfisc .t{color:#D2481F}
 .ev.anual .t{color:#008BAA}
 .ev .d{font-size:12px;color:var(--tinta-2);font-variant-numeric:tabular-nums;line-height:1.5}
 .ev .d b{color:var(--marinho);font-weight:700}
@@ -129,6 +132,7 @@ body{background:var(--fundo);color:var(--tinta);font-family:var(--sans);font-siz
 .legenda i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:7px;
   vertical-align:-1px;border-left:3px solid}
 .legenda i.rtp{background:var(--rtp-bg);border-color:var(--rtp-bd)}
+.legenda i.rtpf{background:var(--rtpf-bg);border-color:var(--rtpf-bd)}
 .legenda i.anual{background:var(--anu-bg);border-color:var(--anu-bd)}
 
 .nota-rodape{font-size:12px;color:var(--tinta-3);margin-top:11px}
@@ -306,14 +310,16 @@ function desenhar(d){
       if (c.corte) linhas += 'corte <b>' + rot(c.corte) + '</b>';
       if (c.fiscalizacao) linhas += (linhas ? "<br>" : "") + 'fisc. <b>' + rot(c.fiscalizacao) + '</b>';
       if (!linhas) linhas = "sem datas";
-      h += '<td><div class="ev ' + c.tipo + '" title="' + esc(c.texto || "") + '">' +
+      const realce = (c.tipo === "rtp" && c.fiscalizacao) ? " comfisc" : "";
+      h += '<td><div class="ev ' + c.tipo + realce + '" title="' + esc(c.texto || "") + '">' +
            '<div class="t">' + titulo + '</div><div class="d">' + linhas + '</div></div></td>';
     });
     h += '</tr>';
   });
   h += '</tbody></table></div></div>' +
        '<div class="legenda">' +
-       '<span><i class="rtp"></i>Revisão tarifária periódica</span>' +
+       '<span><i class="rtpf"></i>Revisão tarifária com fiscalização</span>' +
+       '<span><i class="rtp"></i>Revisão tarifária — só data de corte</span>' +
        '<span><i class="anual"></i>Fiscalização anual</span>' +
        '</div>';
   if (d.notas && d.notas.length){
