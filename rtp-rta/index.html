@@ -217,34 +217,42 @@ function desenhar(d){
 
   /* ---------- KPIs ---------- */
   const futuros = d.eventos.filter(e => e.ref >= hoje);
-  const proximo = futuros[0];
-  const rtpsFuturas = [];
-  d.empresas.forEach(function(e){
-    e.celulas.forEach(function(c){
-      if (c.tipo === "rtp" && c.corte && c.corte >= hoje) rtpsFuturas.push(e.sigla);
-    });
+
+  /* todos os eventos do mês mais próximo, não só o primeiro da lista */
+  const proximoRef = futuros.length ? futuros[0].ref : null;
+  const proximos = futuros.filter(e => e.ref === proximoRef);
+  const siglasProx = [];
+  proximos.forEach(function(e){
+    if (siglasProx.indexOf(e.empresa) === -1) siglasProx.push(e.empresa);
   });
-  const noAno = d.eventos.filter(e => e.ref.slice(0,4) == anoAtual &&
-                                      e.etapa === "fiscalizacao");
-  const emRtpAgora = d.empresas.filter(function(e){
-    return e.celulas.some(function(c){
-      return c.tipo === "rtp" && c.ano === anoAtual;
-    });
+  const etapas = [];
+  proximos.forEach(function(e){
+    const t = (e.etapa === "corte" ? "corte" : "fiscalização") +
+              (e.tipo === "rtp" ? " de revisão tarifária" : " anual");
+    if (etapas.indexOf(t) === -1) etapas.push(t);
+  });
+
+  /* distribuidoras por tipo de evento no ano corrente */
+  const rtpAno = d.empresas.filter(function(e){
+    return e.celulas.some(c => c.tipo === "rtp" && c.ano === anoAtual);
+  });
+  const anualAno = d.empresas.filter(function(e){
+    return e.celulas.some(c => c.tipo === "anual" && c.ano === anoAtual);
   });
 
   h += '<div class="secao"><div class="kpis">';
   h += kpi("Próximo evento",
-           proximo ? proximo.empresa + " · " + rot(proximo.ref) : "–",
-           proximo ? (proximo.etapa === "corte" ? "Data de corte" : "Fiscalização") +
-                     " · " + (proximo.tipo === "rtp" ? "revisão tarifária" : "fiscalização anual")
-                   : "nenhum evento futuro no cronograma",
+           proximoRef ? siglasProx.join(" · ") + " · " + rot(proximoRef) : "–",
+           proximoRef ? etapas.join(" · ") : "nenhum evento futuro no cronograma",
            "ambar", true);
-  h += kpi("Em revisão tarifária em " + anoAtual,
-           emRtpAgora.length,
-           emRtpAgora.length ? emRtpAgora.map(e => e.sigla).join(" · ") : "nenhuma distribuidora",
+  h += kpi("Revisões tarifárias periódicas em " + anoAtual,
+           rtpAno.length,
+           rtpAno.length ? rtpAno.map(e => e.sigla).join(" · ") : "nenhuma distribuidora",
            "ambar");
-  h += kpi("Fiscalizações em " + anoAtual, noAno.length,
-           "eventos de fiscalização no ano", "ciano");
+  h += kpi("Fiscalizações anuais em " + anoAtual,
+           anualAno.length,
+           anualAno.length ? anualAno.map(e => e.sigla).join(" · ") : "nenhuma distribuidora",
+           "ciano");
   h += kpi("Distribuidoras no cronograma", d.empresas.length,
            d.anos[0] + " a " + d.anos[d.anos.length-1], "marinho");
   h += '</div></div>';
@@ -256,14 +264,14 @@ function desenhar(d){
     if (!g){ g = {ref: e.ref, itens: []}; porMes.push(g); }
     g.itens.push(e);
   });
-  const proximos = porMes.slice(0, 6);
+  const mesesAgenda = porMes.slice(0, 6);
 
   h += '<div class="secao">' +
        '<div class="secao-cab"><h2>Agenda dos próximos meses</h2>' +
        '<span class="fonte">datas de corte e de fiscalização</span></div>';
-  if (proximos.length){
+  if (mesesAgenda.length){
     h += '<div class="agenda">';
-    proximos.forEach(function(g){
+    mesesAgenda.forEach(function(g){
       h += '<div class="mes"><div class="cab"><b>' + rotLongo(g.ref) + '</b>' +
            '<span>' + g.itens.length + (g.itens.length === 1 ? " evento" : " eventos") +
            '</span></div><ul>';
