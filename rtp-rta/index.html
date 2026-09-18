@@ -252,11 +252,11 @@ function desenhar(d){
   h += kpi("Revisões tarifárias periódicas em " + anoAtual,
            rtpAno.length,
            rtpAno.length ? rtpAno.map(e => e.sigla).join(" · ") : "nenhuma distribuidora",
-           "verde");
+           "ciano");
   h += kpi("Fiscalizações anuais em " + anoAtual,
            anualAno.length,
            anualAno.length ? anualAno.map(e => e.sigla).join(" · ") : "nenhuma distribuidora",
-           "ciano");
+           "lima");
   h += kpi("Distribuidoras no cronograma", d.empresas.length,
            d.anos[0] + " a " + d.anos[d.anos.length-1], "marinho");
   h += '</div></div>';
