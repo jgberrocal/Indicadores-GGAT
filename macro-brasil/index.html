@@ -428,12 +428,12 @@ function desenhar(d){
   /* ---- KPIs: IPCA (mês, ano, 12m) e IGP-M (mês, ano, 12m) ---- */
   const refIpca = rotuloRef(ipca.referencia);
   h += '<div class="secao"><div class="kpis">';
-  h += kpi("IPCA — no mês", ipca.mes, refIpca, "ciano");
-  h += kpi("IPCA — no ano", ipca.ano, "acumulado até " + refIpca, "ciano");
-  h += kpi("IPCA — 12 meses", ipca.doze_meses, "até " + refIpca, "ciano");
-  h += kpi("IGP-M — no mês", igpm.mes, "mês anterior: " + fmt(igpm.mes_anterior) + "%", "lima");
-  h += kpi("IGP-M — no ano", igpm.ano, "acumulado até " + esc(igpm.mes_referencia), "lima");
-  h += kpi("IGP-M — 12 meses", igpm.doze_meses, esc(igpm.mes_referencia), "lima");
+  h += kpi("IPCA - no mês", ipca.mes, refIpca, "ciano");
+  h += kpi("IPCA - no ano", ipca.ano, "acumulado até " + refIpca, "ciano");
+  h += kpi("IPCA - 12 meses", ipca.doze_meses, "até " + refIpca, "ciano");
+  h += kpi("IGP-M - no mês", igpm.mes, "mês anterior: " + fmt(igpm.mes_anterior) + "%", "lima");
+  h += kpi("IGP-M - no ano", igpm.ano, "acumulado até " + esc(igpm.mes_referencia), "lima");
+  h += kpi("IGP-M - 12 meses", igpm.doze_meses, esc(igpm.mes_referencia), "lima");
   h += '</div></div>';
 
   /* ---- IPCA: 12 meses x meta  +  variação mensal, lado a lado ---- */
